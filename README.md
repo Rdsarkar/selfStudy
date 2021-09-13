@@ -1,2 +1,2 @@
 # selfStudy
-this is a cSharp Project 
+ dot net c# with api 
