@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using selfStudy.DTOs;
 
 namespace selfStudy
 {
@@ -21,9 +22,30 @@ namespace selfStudy
 
         // GET: api/Todoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Todo>>> GetTodos()
+        public async Task<ActionResult<ResponseDto>> GetTodos()
         {
-            return await _context.Todos.ToListAsync();
+            //return await _context.Todos.ToListAsync();
+            List<Todo> todos = await _context.Todos
+                                             .ToListAsync();
+            if (todos.Count > 1) 
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseDto 
+                {
+                    Message = "Finally I have done this",
+                    Success=true,
+                    Payload=todos
+                });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status404NotFound, new ResponseDto 
+                {
+                    Message = "Not Found",
+                    Success = false,
+                    Payload = null
+                });
+            }
+          
         }
 
         // GET: api/Todoes/5
